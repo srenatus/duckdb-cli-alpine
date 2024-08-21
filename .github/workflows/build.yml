@@ -26,9 +26,8 @@ jobs:
           build/release/duckdb --version
           mv build/release/duckdb duckdb-linux-amd64
       - name: add release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: "${{ github.ref_name }}"
           files: |
             ./duckdb-linux-amd64
