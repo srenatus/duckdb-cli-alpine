@@ -1,0 +1,21 @@
+name: "CLI build"
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu:latest
+    container:
+      image: alpine:latest
+    steps:
+      - name: install prerequisites
+        run: apk add g++ git make cmake ninja
+      - run: actions/checkout@v4
+        with:
+          repository: duckdb/duckdb
+      - run: make
+        env:
+          GEN: ninja
+      - name: test
+        run: build/release/duckdb --version
