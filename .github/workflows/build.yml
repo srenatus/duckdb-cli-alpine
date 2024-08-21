@@ -24,12 +24,11 @@ jobs:
       - run: make
         env:
           GEN: ninja
+          OVERRIDE_GIT_DESCRIBE: ${{ github.ref_name }}
       - name: test
         run: |
           build/release/duckdb --version
           mv build/release/duckdb duckdb-linux-amd64
-        env:
-          OVERRIDE_GIT_DESCRIBE: ${{ github.ref_name }}
       - name: add release
         uses: softprops/action-gh-release@v2
         with:
