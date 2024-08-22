@@ -12,7 +12,11 @@ that in every pipeline.
 
 ## How to use
 
+> [!WARNING]
+> Don't forget `libstdc++`.
+
 ```shell
+apk add --no-progress libstdc++
 curl -LO https://github.com/srenatus/duckdb-cli-alpine/releases/download/v1.0.0/duckdb-linux-amd64
 curl -LO https://github.com/srenatus/duckdb-cli-alpine/releases/download/v1.0.0/json.duckdb_extension
 chmod +x duckdb-linux-amd64
