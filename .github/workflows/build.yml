@@ -24,14 +24,18 @@ jobs:
       - run: make
         env:
           GEN: ninja
+          # BUILD_HTTPFS: 1 # OPENSSL troubles
+          BUILD_JSON: 1
           OVERRIDE_GIT_DESCRIBE: ${{ github.ref_name }}
       - name: test
         run: |
           build/release/duckdb --version
           mv build/release/duckdb duckdb-linux-amd64
+          mv build/release/extension/*/*.duckdb_extension .
       - name: add release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "${{ github.ref_name }}"
           files: |
             ./duckdb-linux-amd64
+            ./*.duckdb_extension
