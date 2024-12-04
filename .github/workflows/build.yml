@@ -17,7 +17,7 @@ jobs:
       image: alpine:latest
     steps:
       - name: install prerequisites
-        run: apk add g++ git make cmake ninja openssl openssl-dev
+        run: apk add g++ git make cmake ninja openssl openssl-dev zlib zlib-dev aws-sdk-cpp aws-sdk-cpp-dev aws-crt-cpp-dev
       - uses: actions/checkout@v4
         with:
           repository: duckdb/duckdb
@@ -25,7 +25,7 @@ jobs:
       - run: make
         env:
           GEN: ninja
-          CORE_EXTENSIONS: 'autocomplete;httpfs;json'
+          CORE_EXTENSIONS: 'aws;autocomplete;httpfs;json'
       - name: test
         run: |
           build/release/duckdb --version
