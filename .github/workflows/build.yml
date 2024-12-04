@@ -5,6 +5,7 @@ on:
   push:
     tags:
       - "*"
+  pull_request: {}
 
 permissions:
   contents: write
@@ -16,26 +17,18 @@ jobs:
       image: alpine:latest
     steps:
       - name: install prerequisites
-        run: apk add g++ git make cmake ninja
+        run: apk add g++ git make cmake ninja openssl openssl-dev
       - uses: actions/checkout@v4
         with:
           repository: duckdb/duckdb
-          ref: ${{ github.ref_name }}
+          ref: v1.1.3
       - run: make
         env:
           GEN: ninja
-          # BUILD_HTTPFS: 1 # OPENSSL troubles
-          BUILD_JSON: 1
-          OVERRIDE_GIT_DESCRIBE: ${{ github.ref_name }}
+          CORE_EXTENSIONS: 'autocomplete;httpfs;json'
       - name: test
         run: |
           build/release/duckdb --version
           mv build/release/duckdb duckdb-linux-amd64
           mv build/release/extension/*/*.duckdb_extension .
-      - name: add release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: "${{ github.ref_name }}"
-          files: |
-            ./duckdb-linux-amd64
-            ./*.duckdb_extension
+          tree build/release/extension/
